@@ -1,0 +1,17 @@
+body {
+    padding: 10px;
+}
+a {
+    color: white;
+}
+a.hover {
+    color: blue;
+}
+
+body {
+    background: #EEEDE7;
+}
+
+p {
+    text-transform: lowercase;
+}

@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+   
+        <h2 class="w-65 p-3" style="margin-left: 100px">Create Listings</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            {% include 'auctions/form.html' with form=form %}
+        </form>
+
+        
+
+{% endblock %}
+

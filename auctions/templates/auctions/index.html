@@ -1,0 +1,52 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    
+    <h5 style="padding: 20px; margin-left: 220px "> Active Listings </h5>
+    
+    
+    {% for object in object %}
+    <div class="row ">
+    <div class="col-lg-8 mx-auto p-3">
+
+      <!-- List group-->
+      <ul class="list-group shadow">
+
+        <!-- list group item-->
+        <li class="list-group-item">
+          <!-- Custom content-->
+          <div class="media align-items-lg-center flex-column flex-lg-row p-3">
+
+                {% if object.images %}
+                    <img src="{{ object.images }}"
+                        style="width: 200px"
+                        class="ml-lg-5 order-1 order-lg-2" 
+                        alt="No Image Available for {{ object.productnames}}">
+
+                {% else %}
+                    <h6 style="max-width:200px; text-align:center; word-wrap:break-word;" class="ml-lg-5 order-1 order-lg-2"> 
+                        No image available for {{ object.productnames }}. </h6> 
+
+                {% endif %}        
+
+                <div class="media-body order-2 order-lg-1" style="margin: 20px;">  
+                    <!-- to individual page-->
+                    <a href="{% url 'listingpage' object.id %}"> 
+                        <h5 class="mt-0 font-weight-bold mb-2">  {{ object.productnames }} </h2>
+                    </a>
+                        <h7 class="font-weight-bold my-2"> Price: ${{ object.startingbids }} </h1>
+                    <p  class="font mb-0 small" 
+                        style="margin-top: 25px; max-width:300px; word-wrap:break-word;">  
+                        {{ object.descriptions }} </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}
+
+
+ <!-- <img src="{{ object.images }}" onerror="this.style.opacity='0'"
+                     width="200" 
+                     class="ml-lg-5 order-1 order-lg-2" 
+                     alt="No Image Available for {{ object.productnames}}">  -->

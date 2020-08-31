@@ -1,0 +1,43 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <center>
+
+    
+    <h2>Listing: {{ object.productnames }}</h2>
+
+    {% if user.username %}
+        {% if added%}
+        <a href="{% url 'removewatch' object.id %}"><button class="btn btn-danger">Remove from watchlist</button></a>
+        {% else %}
+        <a href="{% url 'addwatch' object.id %}"><button class="btn btn-success">Add to watchlist</button></a>
+        {% endif %}
+    <br>
+    {% endif %}
+
+
+    {% if object.images %}
+        <img src="{{ object.images }}" style="width: 30%; margin: 30px" class="ml-lg-5 order-1 order-lg-2" alt="No Image Available for {{ object.productnames}}">
+    {% else %}
+        <h6 style="max-width:200px; word-wrap:break-word; margin: 100px" class="ml-lg-5 order-1 order-lg-2"> No available image for {{ object.productnames }}. </h6> 
+    {% endif %}     
+
+    <p> Description: {{ object.descriptions }} </p>
+    <p> Listed by: {{ object.lister }} </p>
+    <p> Category:  {{ object.category }} </p>
+
+
+    <form action="{% url 'addbid' object.id %}" method="post">
+        {% csrf_token %}
+        {{ bidform.as_p }}
+    </form>
+    </center>
+
+    
+
+    
+{% endblock %}
+
+
+
+
