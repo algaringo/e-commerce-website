@@ -1,41 +1,84 @@
 {% extends "auctions/layout.html" %}
-
+{% load crispy_forms_tags %}
 {% block body %}
-    <center>
 
-    
-    <h2>Listing: {{ object.productnames }}</h2>
+<div class="container" style="margin: 100px auto">
 
-    {% if user.username %}
-        {% if added%}
-        <a href="{% url 'removewatch' object.id %}"><button class="btn btn-danger">Remove from watchlist</button></a>
-        {% else %}
-        <a href="{% url 'addwatch' object.id %}"><button class="btn btn-success">Add to watchlist</button></a>
-        {% endif %}
-    <br>
-    {% endif %}
-
-
-    {% if object.images %}
-        <img src="{{ object.images }}" style="width: 30%; margin: 30px" class="ml-lg-5 order-1 order-lg-2" alt="No Image Available for {{ object.productnames}}">
-    {% else %}
-        <h6 style="max-width:200px; word-wrap:break-word; margin: 100px" class="ml-lg-5 order-1 order-lg-2"> No available image for {{ object.productnames }}. </h6> 
-    {% endif %}     
-
-    <p> Description: {{ object.descriptions }} </p>
-    <p> Listed by: {{ object.lister }} </p>
-    <p> Category:  {{ object.category }} </p>
+    <div class="row">
+        <div class="col-md-7">
+              {% if object.images %}
+                    <img class="img-fluid rounded mb-3 mb-md-0" src="{{ object.images }}" style="width:80%;margin:50px;border:10px" class="ml-lg-5 order-1 order-lg-2" alt="No Image Available for {{ object.productnames}}">
+              {% else %}
+                    <img class="img-fluid rounded mb-3 mb-md-0" src="https://i.ibb.co/T8nxLQT/No-Image-Available.png" style="width:80%;margin:50px;border:10px" alt="No-Image-Available"> 
+              {% endif %}
+              <br/><br/><br/>
+        </div>
 
 
-    <form action="{% url 'addbid' object.id %}" method="post">
-        {% csrf_token %}
-        {{ bidform.as_p }}
-    </form>
-    </center>
+        <div class="col-md-5">
+            <h1 style="margin-bottom: 30px" >{{ object.productnames }}</h1>
+              <dl class="row">
+                  <dt class="col-sm-4 mb-3 d-block text-muted">Description:</dt>
+                  <dd class="col-sm-8" style="word-wrap: break-word;"> {{ object.descriptions }} </dd>
 
-    
+                  <dt class="col-sm-4 mb-3 d-block text-muted">Current Bid:</dt>
+                  <dd class="col-sm-8">${{ object.startingbids }}</dd>
 
-    
+                  <dt class="col-sm-4 mb-3 d-block text-muted">Number of Bids:</dt>
+                  <dd class="col-sm-8"> {{ bidcount }} </dd>
+
+                  <dt class="col-sm-4 mb-3 d-block text-muted">Category:</dt>
+                  <dd class="col-sm-8"> {{ object.category }} </dd>
+
+                  <dt class="col-sm-4 mb-3 d-block text-muted">Listed by:</dt>
+                  <dd class="col-sm-8"> {{ object.lister }} </dd>
+              </dl>
+            {% if user.username %}
+              <form action="{% url 'bid' object.id %}" method="post">
+                  <div>
+                      {% csrf_token %}
+                      {{ bidform.bidprice|as_crispy_field }}
+                      <button class="btn btn-lg btn-primary btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">
+                              Submit a Bid</button>
+                  </div>
+              </form>
+            {% endif %}
+      
+            {% if error %}
+             <br />
+                <center class="alert alert-danger" role="alert">
+                    {{error}}
+                </center>
+            {% endif %}
+            {% if success %}
+             <br />
+                <center class="alert alert-success" role="alert">
+                    {{success}}
+                </center>
+            {% endif %}    
+
+          <br />
+              {% if user.username %}
+              {% if added%}
+                <a href="{% url 'removewatch' object.id %}"><button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" style="#51624F; font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">
+                          Remove from watchlist</button></a>
+              {% else %}
+                <a href="{% url 'addwatch' object.id %}"><button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">
+                          Add to watchlist</button></a>
+              {% endif %}
+              {% endif %} 
+          
+          <br />
+
+              {% if user.username %}
+                {% if lister %}
+                    <a href="{% url 'closebid' object.id %}"><button class="btn btn-secondary btn-lg btn-primary btn-block text-uppercase" style="color: white; font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">
+                        Close Bid</button></a>
+                {% endif %}
+              {% endif %}
+        </div>
+      </div>
+</div>  
 {% endblock %}
 
 

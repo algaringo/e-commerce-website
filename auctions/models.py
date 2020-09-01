@@ -20,7 +20,8 @@ class User(AbstractUser):
 
 class Listing(models.Model): 
     productnames = models.CharField(max_length=50)
-    descriptions = models.TextField()
+    descriptions = models.TextField(max_length=100)
+    price = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True)
     startingbids = models.DecimalField(max_digits=15, decimal_places=2)
     images = models.URLField(blank=True, null=True)
     category = models.CharField(max_length=50, choices=CATEGORY, blank=True, null=True)
@@ -45,6 +46,14 @@ class Watchlist(models.Model):
     def __str__(self):
         return f"{self.listingid}"
 
+class Closebid(models.Model):
+    lister = models.CharField(max_length=64)
+    bidder = models.CharField(max_length=64)
+    listingid = models.IntegerField()
+    finalbid = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.listingid}"
 #class Comment(models.Model)
    #comment = models.
 

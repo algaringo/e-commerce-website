@@ -1,9 +1,33 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-<center>
+    <body >
+    <div class="container">
+    <div class="jumbotron" style="margin: 30px auto; background:url(https://i.ibb.co/nsTz1gg/Active-Listings.gif) no-repeat; background-size: 100%;"></header>
+    <h1> <br/><br/><br/><br/><br/> </h1>
+        </div>
+            <div class="row text-center">
+            {% for object in object %}
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card h-100">
+                        {% if object.images %}
+                                <img class="card-img-center" src="{{ object.images }}">
+                            {% else %}
+                                <img class="card-img-top" src="http://placehold.it/500x325" alt="">
+                            {% endif %}  
+                        <div class="card-body">
+                            <a href="{% url 'listingpage' object.id %}" > <h4 class="card-title"> {{ object.productnames }} </h4> <a>
+                            <p class="card-text">Price: ${{ object.startingbids }}</p> <br/>
+                            {{ object.descriptions }}
+                        </div>
+                        <div class="card-footer">
+                            <a href="{% url 'listingpage' object.id %}" style="background-color: #100e1e; color: white;" class="btn">Bid Now!</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    </body>
 
-    <h2>Categories</h2>
-
-</center>
 {% endblock %}

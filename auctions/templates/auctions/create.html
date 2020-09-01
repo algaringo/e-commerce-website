@@ -1,16 +1,32 @@
 {% extends "auctions/layout.html" %}
-
+{% load crispy_forms_tags %}
 
 {% block body %}
-   
-        <h2 class="w-65 p-3" style="margin-left: 100px">Create Listings</h2>
+    <body style="margin-top: 100px">
+        <h5 class="w-80 p-3" >Create Listings</h5>
 
-        <form method="post">
+        <form class="w-80 p-3" method="post">
             {% csrf_token %}
-            {% include 'auctions/form.html' with form=form %}
-        </form>
-
-        
+            <div class="row">
+                <div class="col-6">
+                    {{ form.productnames|as_crispy_field }}
+                </div>
+                <div class="col-6">
+                    {{ form.startingbids|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    {{ form.images|as_crispy_field }}
+                </div>
+                <div class="col-6">
+                    {{ form.category|as_crispy_field }}
+                </div>
+            </div>
+            {{ form.descriptions|as_crispy_field }}
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form> 
+    </body>
 
 {% endblock %}
 

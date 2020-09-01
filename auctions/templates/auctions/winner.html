@@ -1,0 +1,21 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <div class="container" style="margin-top: 10%" >
+        <h2>{{ name }}</h2>
+    </div>
+    <div class="container" id="listings">
+        <h3>CLOSED!</h3>
+        {% if closebidlist.bidder == user.username %}
+            <h4>Congratulations 🏆</h4>
+            <p>You won this bid! </p>
+        {% endif %}
+        <ul>
+            <li><b>Listed by:</b>{{closebidlist.lister}}</li>
+            <li><b>Winner:</b>{{closebidlist.bidder}}</li>
+            <li><b>Final Bid: $</b>{{closebidlist.finalbid}}</li>
+        </ul>
+    </div>
+
+{% endblock %}

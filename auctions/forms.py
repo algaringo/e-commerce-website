@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Listing, Bidding
+from .models import Listing, Bidding, Closebid
 
 class ListingForm(forms.ModelForm):
     class  Meta:
@@ -24,8 +24,21 @@ class BiddingForm(forms.ModelForm):
     class  Meta:
         model = Bidding
         labels = {
-            'bidprice' : 'Bid'
+            'bidprice' : ''
         }
         fields = [
             'bidprice'
         ]
+
+class ClosebidForm(forms.ModelForm):
+    class  Meta:
+        model = Closebid
+
+        fields = [
+            'lister',
+            'bidder',
+            'listingid',
+            'finalbid'
+        ]
+
+
