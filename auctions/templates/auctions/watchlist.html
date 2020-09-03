@@ -2,11 +2,87 @@
 
 {% block body %}
 
-<div class="container" style="margin: 10% auto 50% auto;">
+<!-- Header -->
+<header class="bg-secondary text-center py-5 mb-4">
   <div class="container">
-    <h2>Watchlist</h2>
+    <h1 class="font-weight-light text-white">WATCHLIST </h1>
   </div>
+</header>
+
+
+<!-- Page Content -->
+<div class="container" style="margin-top: 5%" >
+  <div class="row">
+    <!-- row -->
+
+    {% for object in object %}
+
+    <div class="col-xl-3 col-md-6 mb-4" >
+      <div class="card h-100 border-0 shadow" >
+          {% if object.images %}
+              <img class="card-img-center" src="{{ object.images }}">
+          {% else %}
+              <img class="card-img-top" src="https://i.ibb.co/JpH8YSD/no-image-1.png" alt="no-image-1" border="0">
+          {% endif %}  
+            <div class="card-body text-center">
+              <a href="{% url 'listingpage' object.listingid %}">
+                <h5 class="card-title mb-0"> {{ object.productnames }} </h5>
+              </a>
+                <div class="card-text text-black-50">
+                    ${{ object.finalbid }}
+                </div>
+            </div>
+      </div>
+    </div>
+
+    {% empty %}
+        <center>
+            <img style="width: 30%; margin-top: -8%" src="https://i.ibb.co/6vbhKgQ/Pngtree-it-s-in-the-3845898.png" alt="Pngtree-it-s-in-the-3845898" border="0">
+            <h5 >  No active listings on your watchlist.  </h5>
+            <hr style="margin: 5% auto 3% auto">
+        </center>
+    {% endfor %}
+
+
+<div class="alert alert-success container" style="margin-top: 5%">
+ <strong>(CLOSED) </strong> &nbsp; BIDS YOU'VE WON:
+</div>
+
+<!-- Page Content -->
+<div class="container" style="margin-top: 5%" >
+  <div class="row">
+    <!-- row -->
+
+    {% for object in closedbid %}
     
 
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card h-100 border-0 shadow">
+          {% if object.images %}
+              <img class="card-img-center" src="{{ object.images }}">
+          {% else %}
+              <img class="card-img-top" src="https://i.ibb.co/JpH8YSD/no-image-1.png" alt="no-image-1" border="0">
+          {% endif %}  
+            <div class="card-body text-center">
+              <a href="{% url 'closed' object.listingid %}">
+                <h5 class="card-title mb-0"> {{ object.productnames }} </h5>
+              </a>
+                <div class="card-text text-black-50">
+                    ${{ object.finalbid }}
+                </div>
+            </div>
+      </div>
+    </div>
+
+    {% empty %}
+        <h7 >  You haven't won any bids yet. <a href="{% url 'index' %}"> Start bidding now! </a>  </h7>
+    {% endfor %}
+
+  <!-- /.row -->
+  </div>
+  </div>
+  </div>
 </div>
+
+
 {% endblock %}

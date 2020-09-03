@@ -2,18 +2,11 @@
 
 {% block body %}
 
-    <div class="container" style="margin-top: 10%" >
-        <h2>{{ name }}</h2>
-    </div>
-    <div class="container" id="listings">
-        <h3>CLOSED!</h3>
-        {% if closebidlist.bidder == user.username %}
-            <h4>Congratulations 🏆</h4>
-            <p>You won this bid! </p>
-        {% endif %}
+    <div class="container" style="margin: 15% auto 50% auto">
+        <h3>Summary for {{ name }} </h3>
         <ul>
-            <li><b>Listed by:</b>{{closebidlist.lister}}</li>
-            <li><b>Winner:</b>{{closebidlist.bidder}}</li>
+            <li><b>Listed by: </b>{{closebidlist.lister}}</li>
+            <li><b>Highest Bidder: </b>{{closebidlist.bidder}}</li>
             <li><b>Final Bid: $</b>{{closebidlist.finalbid}}</li>
         </ul>
     </div>
