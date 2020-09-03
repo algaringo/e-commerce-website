@@ -7,13 +7,14 @@ from django import forms
 from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.models import Session
 from datetime import datetime
+from django.utils.timezone import now
 
 
-from .models import User, Listing, Bidding, Watchlist, Closebid
+from .models import User, Listing, Bidding, Watchlist, Closebid, Comment
 
-from .forms import ListingForm, BiddingForm
+from .forms import ListingForm, BiddingForm, CommentForm
 
-def index(request):
+def index(request):                                                             
     listing = Listing.objects.all()
     try:
         watch = Watchlist.objects.filter(watcher=request.user.username)
@@ -29,10 +30,17 @@ def index(request):
 def createlisting(request):
     creator = Listing.objects.all()
     form = ListingForm(request.POST or None)
+    try:
+        watch = Watchlist.objects.filter(watcher=request.user.username)
+        watchcount = len(watch)
+    except:
+        watchcount = None
     if request.method == "POST":
         if form.is_valid():
+            now = datetime.now()                                                #save date created with current timezone
             fs = form.save(commit=False)
-            fs.lister = request.user
+            fs.lister = request.user                                            #save info not listed at forms.py
+            fs.created = now
             fs.save()
         return HttpResponseRedirect(reverse('index'))
     else:
@@ -42,9 +50,11 @@ def createlisting(request):
         })
 
 def listingpage(request,id):
+    listing = Listing.objects.get(id=id)
+    comment = Comment.objects.filter(listingid=id)
     try:
+        cform = CommentForm(request.POST or None)
         bidform = BiddingForm(request.POST or None)
-        listing = Listing.objects.get(id=id)
     except:
         return redirect('index')
     if request.user.username:
@@ -54,7 +64,17 @@ def listingpage(request,id):
         except:
             added = False
         try:
-            listing = Listing.objects.get(id=id)
+            watch = Watchlist.objects.filter(watcher=request.user.username)
+            watchcount=len(watch)
+        except:
+            watchcount=None
+        try:
+            ccount = Comment.objects.filter(listingid=id)
+            ccount=len(ccount)
+        except:
+            watchcount=None
+        try:
+
             if listing.lister == request.user.username :
                 lister = True
             else:
@@ -65,12 +85,10 @@ def listingpage(request,id):
         added = False
         lister = False
     try:
-        watch = Watchlist.objects.filter(watcher=request.user.username)
         bid = Bidding.objects.filter(listingid=id)
-        watchcount = len(watch)
         bidcount = len(bid)
+        listing = Listing.objects.get(id=id)
     except:
-        watchcount = None
         bicount = None
     return render(request, "auctions/listing.html", {
         'object': listing,
@@ -80,13 +98,21 @@ def listingpage(request,id):
         "error":request.COOKIES.get('error'),
         "success":request.COOKIES.get('success'),
         "bidcount": bidcount,
-        "lister": lister
+        "lister": lister,
+        'cform': cform,
+        "comment": comment,
+        "ccount": ccount
     })
 
 @login_required
 def addwatch(request, id):
     if request.user.username:
+        listing = Listing.objects.get(id=id)
         watchers = Watchlist(watcher = request.user.username, listingid = id)
+        watchers.lister = listing.lister
+        watchers.finalbid = listing.startingbids
+        watchers.productnames = listing.productnames
+        watchers.images = listing.images
         watchers.save()
         return redirect('listingpage', id=id)
     else:
@@ -96,13 +122,34 @@ def addwatch(request, id):
 def removewatch(request,id):
     if request.user.username:
         try:
-            watchers = Watchlist.objects.get(watcher=request.user.username,listingid=id)
-            watchers.delete()
+            Watchlist.objects.filter(listingid=id).delete()
             return redirect('listingpage', id=id)
         except:
             return redirect('listingpage', id=id)
     else:
         return redirect('index')
+
+@login_required
+def watchlist(request):
+    try:
+        watchlist = Watchlist.objects.filter(watcher=request.user.username)
+        closebid = Closebid.objects.filter(bidder=request.user.username)
+        watchcount = len(watchlist)                                                 #count how many rows in table Watchlist using len()                                    
+    except:
+        watchcount = None
+    try:
+        if Watchlist.objects.get(listingid=listingid):
+            closed = True
+        else:
+            closed = False
+    except:
+        closed = False
+    return render(request, "auctions/watchlist.html", {
+        'object': watchlist,
+        "watchcount": watchcount,
+        "closedbid": closebid,
+        "closed" : closed
+    })
 
 @login_required
 def bid(request, listingid):
@@ -129,41 +176,14 @@ def bid(request, listingid):
                 fs.listingid = listingid
                 fs.save()   
             response = redirect('listingpage', id=listingid)
-            response.set_cookie('success','Successful Bid! Your bid is the current highest bid.', max_age=1)
+            response.set_cookie('success','Successful Bid! Your bid is currently the highest bid.', max_age=1)
             return response
         else:
             response = redirect('listingpage', id=listingid)
-            response.set_cookie('error','Your bid must be higher than the current price!', max_age=1)
+            response.set_cookie('error','Your bid must be higher than the current bid!', max_age=1)
             return response
     else:
         return redirect('index')
-
-@login_required
-def watchlist(request):
-    try:
-        w = Watchlist.objects.filter(watcher=request.user.username)
-        items = []
-        for i in w:
-            items.append(Listing.objects.filter(id=i.id))
-        try:
-            w = Watchlist.objects.filter(watcher=request.user.username)
-            wcount=len(w)
-        except:
-            wcount=None
-        return render(request,"auctions/watchlist.html",{
-            "items":items,
-            "wcount":wcount
-        })
-    except:
-        try:
-            w = Watchlist.objects.filter(watcher=request.user.username)
-            wcount=len(w)
-        except:
-            wcount=None
-        return render(request,"auctions/watchlist.html",{
-            "items":None,
-            "wcount":wcount
-        })
         
 @login_required
 def closebid(request, listingid):
@@ -176,6 +196,8 @@ def closebid(request, listingid):
         name = listing.productnames
         closebid.lister = listing.lister
         closebid.listingid = listingid
+        closebid.productnames = listing.productnames
+        closebid.imaged = listing.images
         try:
             bid = Bidding.objects.get(listingid=listingid,bidprice=listing.startingbids)
             closebid.bidder = bid.bidder
@@ -211,6 +233,8 @@ def closebid(request, listingid):
             closebid.bidder = listing.lister
             closebid.listingid = listingid
             closebid.finalbid = listing.startingbids
+            closebid.productnames = listing.productnames
+            closebid.imaged = listing.images
             closebid.save()
             closebidlist = Closebid.objects.get(listingid=listingid)
         listing.delete()
@@ -227,6 +251,27 @@ def closebid(request, listingid):
     else:
         return redirect('index')
 
+@login_required
+def closed(request, listingid):
+    closed = Closebid.objects.get(listingid=listingid)
+    return render(request, "auctions/closed.html", {
+        "object": closed
+    })
+
+def comment(request, listingid):
+    if request.method == "POST":
+        comment = Comment.objects.all()
+        cform = CommentForm(request.POST or None)
+        if cform.is_valid():
+            now = datetime.now()                                               
+            fs = cform.save(commit=False)   
+            fs.listingid = listingid
+            fs.user = request.user.username                               
+            fs.time = now
+            fs.save()
+        return redirect('listingpage', id=listingid)
+    else:
+        return redirect('index') 
 
 def category(request):
     return render(request, "auctions/categories.html")

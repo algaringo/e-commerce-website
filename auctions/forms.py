@@ -1,12 +1,12 @@
 from django import forms
 
-from .models import Listing, Bidding, Closebid
+from .models import Listing, Bidding, Comment
 
 class ListingForm(forms.ModelForm):
     class  Meta:
         model = Listing
         labels = {
-            'productnames' : 'Product Name',
+            'productnames' : 'Listing Title',
             'descriptions' : 'Description',
             'startingbids' : 'Starting Bid',
             'images' : 'Image URL',
@@ -30,15 +30,14 @@ class BiddingForm(forms.ModelForm):
             'bidprice'
         ]
 
-class ClosebidForm(forms.ModelForm):
-    class  Meta:
-        model = Closebid
-
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        labels = {
+            'comment' : ''
+        }
         fields = [
-            'lister',
-            'bidder',
-            'listingid',
-            'finalbid'
+            'comment'
         ]
 
 
