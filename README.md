@@ -1,2 +1,2 @@
 # e-commerce-website
-e-commerce website using django framework
+(e-commerce) auction site using django framework
