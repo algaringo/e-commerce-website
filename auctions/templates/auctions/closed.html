@@ -1,0 +1,57 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+
+<div class="container" style="margin: 100px auto">
+
+    <div class="row">
+
+    <!-- LEFT COLLUMN -->
+        <div class="col-md-7">
+              {% if object.images %}
+                    <img class="img-fluid rounded mb-3 mb-md-0" src="{{ object.images }}" style="width:80%;margin:50px;border:10px" class="ml-lg-5 order-1 order-lg-2" alt="No Image Available for {{ object.productnames}}">
+              {% else %}
+                    <img class="img-fluid rounded mb-3 mb-md-0" src="https://i.ibb.co/T8nxLQT/No-Image-Available.png" style="width:80%;margin:50px;border:10px" alt="No-Image-Available"> 
+              {% endif %}
+              <br/><br/><br/>
+        </div>
+
+        <!-- RIGHT COLLUMN -->
+        <div class="col-md-5">
+
+            <!-- WINNER NOTIFICATION -->
+            {% if object.bidder == user.username %}
+                <br />
+                <center class="alert alert-success" role="alert" style="margin: 10% auto 5% auto">
+                    <span class="alert-link"> CONGRATULATIONS! </span> You won this bid!
+               </center>
+            {% else %}
+                <br />
+                <center class="alert alert-danger" role="alert" style="margin: 10% auto 5% auto">
+                    <span class="alert-link"> BETTER LUCK NEXT TIME! </span> You lost this bid.
+                </center>
+            {% endif %} 
+            
+             <!-- PRODUCT DETAILS -->
+            <h1 style="margin-bottom: 30px" >Details for {{ object.productnames }}: </h1>
+              <dl class="row">
+
+                  <dt class="col-sm-4 mb-3 d-block text-muted">Highest Bidder: </dt>
+                  <dd class="col-sm-8"> {{ object.bidder }} </dd>
+                  
+                  <dt class="col-sm-4 mb-3 d-block text-muted">Final Bid:</dt>
+                  <dd class="col-sm-8"> ${{ object.finalbid }} </dd>
+
+                  <dt class="col-sm-4 mb-3 d-block text-muted">Listed by:</dt>
+                  <dd class="col-sm-8"> {{ object.lister }} </dd>
+                  
+                  <dd class="col-sm-8" style="margin-top: 5%"> <a href="{% url 'index' %}"> Checkout other Listings! </a> </dd>
+              </dl>
+        </div>
+    </div>
+</div>  
+
+{% endblock %}
+
+
+
+
