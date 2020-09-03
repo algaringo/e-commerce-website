@@ -4,26 +4,35 @@
 <html lang="en">
     <head>
         <title>{% block title %}Auctions{% endblock %}</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
         
     </head>
     <body>
-      <!-- Navigation -->
+    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
-        <a class="navbar-brand" href="{% url 'index' %}">AUCTIONS</a>
-            <div style="color:white; font-size: 12px">
-                {% if user.is_authenticated %}
-                        Signed in as <strong>{{ user.username }}</strong>.
-                {% else %}
-                        Not signed in.
-                {% endif %}
-            </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+
+        <!-- LEFT SIDE OF HEADER -->
+            <a class="navbar-brand" href="{% url 'index' %}">AUCTIONS</a>
+                <div style="color:white; font-size: 12px">
+                    {% if user.is_authenticated %}
+                            Signed in as <strong>{{ user.username }}</strong>.
+                    {% else %}
+                            Not signed in.
+                    {% endif %}
+                </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+        <!-- RIGHT SIDE OF HEADER -->
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
@@ -32,8 +41,8 @@
             {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'watchlist' %}">Watchlist 
-                        {% if watchcount == 0 %}
-                        </a>
+                        {% if watchcount is 0 %}
+                    </a>
                         {% else %}
                         <span class="nav-item badge badge-success">{{watchcount}}</span></a>
                         {% endif %}
@@ -64,7 +73,8 @@
         {% block body %}
         {% endblock %}
 
-    <footer class="py-5 bg-dark" style="margin-top: 80px; display: block;">
+
+    <footer class="py-5 bg-dark" style="margin-top: 10%; display: block;">
         <div class="container">
             <p class="m-0 text-center text-white">Copyright &copy; Angelu Garingo 2020</p>
         </div>
