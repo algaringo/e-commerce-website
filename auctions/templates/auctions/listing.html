@@ -7,7 +7,7 @@
 
     <div class="row"> 
 
-    <!-- LEFT COLUMN -->
+    <!-- LEFT COLUMN - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
         <div class="col-md-7">
 
         <!-- IMAGE OF ITEM -->
@@ -18,43 +18,70 @@
                     <img class="img-fluid rounded mb-3 mb-md-0" src="https://i.ibb.co/T8nxLQT/No-Image-Available.png" style="width:80%;margin:50px;border:10px" alt="No-Image-Available"> 
               {% endif %}
               <br/><br/><br/>
+        <div class="comment-box">
+        <div class="container desc">
+          <div class="row" >
+            <div class="col-11">
+              <dt class="col-sm-4 mb-3 d-block text-muted">Description:</dt>
+                  <dd class="col-sm-12" style="word-wrap: break-word; margin: 20px;"> {{ object.descriptions }} </dd>
+            </div>
+          </div>
+        </div>
+        </div>
 
         <!-- COMMENT SECTION -->
-        <div class="container">
-          <div class="row">
-            <div class="col-11">
-              <div class="comments">
+          <div class="container">
+            <div class="row">
+              <div class="col-11">
+                <div class="comments">
 
-                <div class="comments-details">
-                  <span class="total-comments comments-sort"> {{ ccount }} &nbsp; comments</span>    
-                </div>
+              <!-- ADD COMMENTS -->
 
-             <!-- ADD COMMENTS -->
-                <div class="comment-box add-comment">
-                  <span class="commenter-pic">
-                    <img src="https://icon-library.net/images/anonymous-avatar-icon/anonymous-avatar-icon-2.jpg" class="img-fluid">
-                  </span>
-                  <span class="commenter-name">
-                    <form action="{% url 'comment' object.id %}" method="post">
-                    {% csrf_token %}
-                    {{ cform.comment|as_crispy_field }}
-                    <button type="submit" class="btn btn-default">Comment</button>
-                    </form>
-                  </span>
-                </div>
+              {% if user.username %}
+                  <div class="comment-box add-comment">
+                    <span class="commenter-pic">
+                      <img src="https://icon-library.net/images/anonymous-avatar-icon/anonymous-avatar-icon-2.jpg" class="img-fluid">
+                    </span>
+                    <span class="commenter-name">
+                      <form action="{% url 'comment' object.id %}" method="post">
+                      {% csrf_token %}
+                      {{ cform.comment|as_crispy_field }}
+                      <button type="submit" class="btn btn-default">Comment</button>
+                      </form>
+                    </span>
+                  </div>
+              {% else %}
+                  
+              {% endif %}
 
-            <!-- LOOP TO SHOW ALL COMMENTS -->
-              {% for obj in comment reversed %}
-                <div class="comment-box">
-                  <span class="commenter-pic">
-                    <img src="https://icon-library.net/images/anonymous-avatar-icon/anonymous-avatar-icon-2.jpg" class="img-fluid">
-                  </span>
-                  <span class="commenter-name">
-                    <strong> {{ obj.user }} </strong> <span class="comment-time"> {{ obj.time }} </span>
-                  </span>       
-                  <p class="comment-txt more"> {{ obj.comment }} </p>              
+              
+                <!-- TOGGLE TO HIDE/SHOW COMMENTS -->
+                <p>
+                  <a data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"> 
+                  <div class="comments-details">
+                    <span class="total-comments comments-sort"> {{ ccount }}&nbsp; Comments</span>     
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-up-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                    </svg>
+                  </div>
+                  </a>
+                </a>
+                </p>
+
+                <!-- LOOP TO SHOW ALL COMMENTS -->
+                <div class="panel-collapse collapse show" id="multiCollapseExample1">
+                  {% for obj in comment reversed %}
+                    <div class="comment-box">
+                      <span class="commenter-pic">
+                        <img src="https://icon-library.net/images/anonymous-avatar-icon/anonymous-avatar-icon-2.jpg" class="img-fluid">
+                      </span>
+                      <span class="commenter-name">
+                        <strong> {{ obj.user }} </strong> <span class="comment-time"> {{ obj.time }} </span>
+                      </span>       
+                      <p class="comment-txt more"> {{ obj.comment }} </p>              
+                    </div>
+                  {% endfor %}
                 </div>
-              {% endfor %}
 
             </div>
           </div>
@@ -62,14 +89,13 @@
       </div>
     </div>
 
-    <!-- RIGHT COLUMN -->
+    <!-- RIGHT COLUMN - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
         <div class="col-md-5">
-            <h1 style="margin-bottom: 30px" >{{ object.productnames }}</h1>
+            <h1 style="margin-bottom: 30px; word-wrap: break-word;">{{ object.productnames }}</h1>
 
         <!-- PRODUCT DETAILS -->
               <dl class="row">
-                  <dt class="col-sm-4 mb-3 d-block text-muted">Description:</dt>
-                  <dd class="col-sm-8" style="word-wrap: break-word;"> {{ object.descriptions }} </dd>
+                  
 
                   <dt class="col-sm-4 mb-3 d-block text-muted">Current Price:</dt>
                   <dd class="col-sm-8"> <strong>${{ object.startingbids }}</strong> </dd>
@@ -108,10 +134,15 @@
                   <div>
                       {% csrf_token %}
                       {{ bidform.bidprice|as_crispy_field }}
-                      <button class="btn btn-lg btn-primary btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">
+                      <button class="btn btn-lg btn-warning btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">
                               Submit a Bid</button>
                   </div>
               </form>
+            {% else %}
+                      <a href="{% url 'register'%}">
+                      <button class="btn btn-lg btn-warning btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">
+                              Register now! </button>
+                      </a>
             {% endif %}   
 
       <!-- WATCHLIST -->
@@ -130,7 +161,7 @@
           <br />
               {% if user.username %}
                 {% if lister %}
-                    <a href="{% url 'closebid' object.id %}"><button class="btn btn-secondary btn-lg btn-primary btn-block text-uppercase" style="color: white; font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">
+                    <a href="{% url 'closebid' object.id %}"><button class="btn btn-primary btn-lg btn-primary btn-block text-uppercase" style="color: white; font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">
                         Close Bid</button></a>
                 {% endif %}
               {% endif %}

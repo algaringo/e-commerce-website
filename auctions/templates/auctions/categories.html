@@ -3,9 +3,10 @@
 {% block body %}
     <body >
     <div class="container">
-    <div class="jumbotron" style="margin: 30px auto; background:url(https://i.ibb.co/nsTz1gg/Active-Listings.gif) no-repeat; background-size: 100%;"></header>
+    <div class="jumbotron" style="margin: 30px auto; background:url(https://i.ibb.co/HnMyp6H/Active-Listings.png) no-repeat; background-size: 100%;"></header>
     <h1> <br/><br/><br/><br/><br/> </h1>
-        </div>
+        </div> <!-- START DIV -->
+
             <div class="row text-center">
             {% for object in object %}
                 <div class="col-lg-3 col-md-6 mb-4">
@@ -26,8 +27,9 @@
                     </div>
                 </div>
             {% endfor %}
-        </div>
-    </div>
+            </div>
+
+        </div> <!-- END DIV -->
     </body>
 
 {% endblock %}

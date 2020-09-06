@@ -20,8 +20,8 @@ class User(AbstractUser):
     pass
 
 class Listing(models.Model): 
-    productnames = models.CharField(max_length=50)
-    descriptions = models.TextField(max_length=100)
+    productnames = models.CharField(max_length=20)
+    descriptions = models.TextField(max_length=500)
     startingbids = models.DecimalField(max_digits=15, decimal_places=2)
     images = models.URLField(blank=True, null=True)
     category = models.CharField(max_length=50, choices=CATEGORY, blank=True, null=True)
@@ -40,7 +40,7 @@ class Bidding(models.Model):
         return f"{self.listingid}"
 
 class Watchlist(models.Model):
-    productnames = models.CharField(max_length=50)
+    productnames = models.CharField(max_length=20)
     images = models.URLField(blank=True, null=True)
     finalbid = models.DecimalField(max_digits=15, decimal_places=2)
     lister = models.CharField(max_length=50, blank=True, null=True)
@@ -51,11 +51,12 @@ class Watchlist(models.Model):
         return f"{self.listingid}"
 
 class Closebid(models.Model):
-    productnames = models.CharField(max_length=50)
+    productnames = models.CharField(max_length=20)
     images = models.URLField(blank=True, null=True)
     lister = models.CharField(max_length=64, blank=True, null=True)
     bidder = models.CharField(max_length=64, blank=True, null=True)
     listingid = models.IntegerField()
+    category = models.CharField(max_length=50, blank=True, null=True)
     finalbid = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True)
 
     def __str__(self):

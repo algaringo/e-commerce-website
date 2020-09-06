@@ -70,9 +70,9 @@ def listingpage(request,id):
             watchcount=None
         try:
             ccount = Comment.objects.filter(listingid=id)
-            ccount=len(ccount)
+            ccount = len(ccount)
         except:
-            watchcount=None
+            ccount = len(ccount)
         try:
 
             if listing.lister == request.user.username :
@@ -82,8 +82,11 @@ def listingpage(request,id):
         except:
             return redirect('index')
     else: 
+        ccount = Comment.objects.filter(listingid=id)
+        ccount = len(ccount)
         added = False
         lister = False
+        watchcount = None
     try:
         bid = Bidding.objects.filter(listingid=id)
         bidcount = len(bid)
@@ -138,6 +141,11 @@ def watchlist(request):
     except:
         watchcount = None
     try:
+        bidwincount = Closebid.objects.filter(bidder = request.user.username)
+        bidwincount = len(bidwincount)
+    except:
+        binwincoun = None
+    try:
         if Watchlist.objects.get(listingid=listingid):
             closed = True
         else:
@@ -148,7 +156,8 @@ def watchlist(request):
         'object': watchlist,
         "watchcount": watchcount,
         "closedbid": closebid,
-        "closed" : closed
+        "closed" : closed,
+        "bidwincount": bidwincount
     })
 
 @login_required
@@ -180,7 +189,7 @@ def bid(request, listingid):
             return response
         else:
             response = redirect('listingpage', id=listingid)
-            response.set_cookie('error','Your bid must be higher than the current bid!', max_age=1)
+            response.set_cookie('error','Your bid must be higher than the current price!', max_age=1)
             return response
     else:
         return redirect('index')
@@ -197,7 +206,8 @@ def closebid(request, listingid):
         closebid.lister = listing.lister
         closebid.listingid = listingid
         closebid.productnames = listing.productnames
-        closebid.imaged = listing.images
+        closebid.images = listing.images
+        closebid.category = listing.category
         try:
             bid = Bidding.objects.get(listingid=listingid,bidprice=listing.startingbids)
             closebid.bidder = bid.bidder
@@ -234,7 +244,8 @@ def closebid(request, listingid):
             closebid.listingid = listingid
             closebid.finalbid = listing.startingbids
             closebid.productnames = listing.productnames
-            closebid.imaged = listing.images
+            closebid.images = listing.images
+            closebid.category = listing.category
             closebid.save()
             closebidlist = Closebid.objects.get(listingid=listingid)
         listing.delete()
@@ -242,7 +253,7 @@ def closebid(request, listingid):
             watch = Watchlist.objects.filter(watcher=request.user.username)
             watchcount=len(watch)
         except:
-            watchcount=None
+            watchcount = None
         return render(request,"auctions/winner.html",{
             "closebidlist": closebidlist,
             "name": name,
@@ -274,8 +285,10 @@ def comment(request, listingid):
         return redirect('index') 
 
 def category(request):
-    return render(request, "auctions/categories.html")
-        
+    category = Listing.objects.all()
+    return render(request, "auctions/categories.html", {
+        "object": category
+    })
 
 def login_view(request):
     if request.method == "POST":

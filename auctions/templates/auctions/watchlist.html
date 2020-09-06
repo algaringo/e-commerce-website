@@ -2,87 +2,109 @@
 
 {% block body %}
 
-<!-- Header -->
+<!-- HEADER -->
 <header class="bg-secondary text-center py-5 mb-4">
   <div class="container">
     <h1 class="font-weight-light text-white">WATCHLIST </h1>
   </div>
 </header>
 
+  <!-- - - - - - - -  - - - - - CLOSED BID - - - - - - - - - - - - - - -->
 
-<!-- Page Content -->
-<div class="container" style="margin-top: 5%" >
-  <div class="row">
-    <!-- row -->
+  <!-- TOGGLE TO CLOSED BIDS WON -->
+  <p><a data-toggle="collapse" href="#collapsewonbid" role="button" aria-expanded="false" aria-controls="collapsewonbid"> 
+      <div class="alert alert-danger container" style="margin-top: 5%">
+          <strong> BIDS WON ({{ bidwincount }}) </strong> 
+      </div>
+  </a></p>
 
+  <!-- COLLAPSABLE PART -->
+  <div class="panel-collapse collapse" id="collapsewonbid">
+
+  <!-- CONATINER FOR CLOSED ITEMS WON -->
+  <div class="container" style="margin-top: 5%" >
+      <div class="row">
+
+      <!-- LOOP TO SHOW ALL CLOSED ITEMS WON -->
+      {% for object in closedbid %}
+      
+      <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card h-100 border-0 shadow">
+              {% if object.images %}
+                  <img class="card-img-center" src="{{ object.images }}">
+              {% else %}
+                  <img class="card-img-top" src="https://i.ibb.co/JpH8YSD/no-image-1.png" alt="no-image-1" border="0">
+              {% endif %}  
+                <div class="card-body text-center">
+                    <a href="{% url 'closed' object.listingid %}">
+                        <h5 class="card-title mb-0"> [CLOSED] {{ object.productnames }} </h5>
+                    </a>
+                </div>
+          </div>
+      </div>
+
+      {% empty %}
+          <h7 >  You haven't won any bids yet. <a href="{% url 'index' %}"> Start bidding now! </a>  </h7>
+      {% endfor %}
+      <!-- LOOP TO SHOW ALL CLOSED ITEMS WON -->
+ 
+    </div>
+  </div>
+        <hr style="margin: 5% auto 3% auto">
+  </div>
+  <!-- END OF CONATINER FOR CLOSED ITEMS WON -->
+
+  <!-- - - - - - - -  - - - - - WATCHLIST - - - - - - - - - - - - - - -->
+
+  <!-- TOGGLE TO WATCHLIST -->
+  <p>
+    <a data-toggle="collapse" href="#collapsebid" role="button" aria-expanded="false" aria-controls="collapsebid"> 
+      <div class="alert alert-success container" >
+      <strong>WATCHLIST</strong>
+      </div>
+    </a>
+  </p>
+
+  <!-- START OF COLLAPSIBLE PART --> &nbsp;
+  <div class="panel-collapse collapse show" id="collapsebid">
+
+  <!-- CONTAINER FOR WATCHLIST -->
+  <div class="container" >
+    <div class="row">
+  
+    <!-- LOOP TO SHOW WATCHLIST -->
     {% for object in object %}
-
-    <div class="col-xl-3 col-md-6 mb-4" >
-      <div class="card h-100 border-0 shadow" >
-          {% if object.images %}
-              <img class="card-img-center" src="{{ object.images }}">
-          {% else %}
-              <img class="card-img-top" src="https://i.ibb.co/JpH8YSD/no-image-1.png" alt="no-image-1" border="0">
-          {% endif %}  
-            <div class="card-body text-center">
-              <a href="{% url 'listingpage' object.listingid %}">
-                <h5 class="card-title mb-0"> {{ object.productnames }} </h5>
-              </a>
-                <div class="card-text text-black-50">
-                    ${{ object.finalbid }}
-                </div>
-            </div>
+      
+      <div class="col-xl-3 col-md-6 mb-4" >
+        <div class="card h-100 border-0 shadow" >
+            {% if object.images %}
+                <img class="card-img-center" src="{{ object.images }}">
+            {% else %}
+                <img class="card-img-top" src="https://i.ibb.co/JpH8YSD/no-image-1.png" alt="no-image-1" border="0">
+            {% endif %}  
+              <div class="card-body text-center">
+                <a href="{% url 'listingpage' object.listingid %}">
+                  <h5 class="card-title mb-0"> {{ object.productnames }} </h5>
+                </a>
+                  <div class="card-text text-black-50">
+                      ${{ object.finalbid }}
+                  </div>
+              </div>
+        </div>
       </div>
+
+      {% empty %}
+          <center>
+              <img style="width: 30%; margin-top: -8% " src="https://i.ibb.co/6vbhKgQ/Pngtree-it-s-in-the-3845898.png" alt="Pngtree-it-s-in-the-3845898" border="0">
+              <h5>  No active listings on your watchlist.  </h5>
+          </center>
+      {% endfor %}
+      <!-- END OF LOOP TO SHOW WATCHLIST -->
+
     </div>
-
-    {% empty %}
-        <center>
-            <img style="width: 30%; margin-top: -8%" src="https://i.ibb.co/6vbhKgQ/Pngtree-it-s-in-the-3845898.png" alt="Pngtree-it-s-in-the-3845898" border="0">
-            <h5 >  No active listings on your watchlist.  </h5>
-            <hr style="margin: 5% auto 3% auto">
-        </center>
-    {% endfor %}
-
-
-<div class="alert alert-success container" style="margin-top: 5%">
- <strong>(CLOSED) </strong> &nbsp; BIDS YOU'VE WON:
-</div>
-
-<!-- Page Content -->
-<div class="container" style="margin-top: 5%" >
-  <div class="row">
-    <!-- row -->
-
-    {% for object in closedbid %}
-    
-
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card h-100 border-0 shadow">
-          {% if object.images %}
-              <img class="card-img-center" src="{{ object.images }}">
-          {% else %}
-              <img class="card-img-top" src="https://i.ibb.co/JpH8YSD/no-image-1.png" alt="no-image-1" border="0">
-          {% endif %}  
-            <div class="card-body text-center">
-              <a href="{% url 'closed' object.listingid %}">
-                <h5 class="card-title mb-0"> {{ object.productnames }} </h5>
-              </a>
-                <div class="card-text text-black-50">
-                    ${{ object.finalbid }}
-                </div>
-            </div>
-      </div>
-    </div>
-
-    {% empty %}
-        <h7 >  You haven't won any bids yet. <a href="{% url 'index' %}"> Start bidding now! </a>  </h7>
-    {% endfor %}
-
-  <!-- /.row -->
   </div>
   </div>
-  </div>
-</div>
+  <!-- END OF WATCHLIST CONTAINER -->
 
 
 {% endblock %}

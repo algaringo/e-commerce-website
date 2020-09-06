@@ -6,7 +6,11 @@
         <h3>Summary for {{ name }} </h3>
         <ul>
             <li><b>Listed by: </b>{{closebidlist.lister}}</li>
+            {% if closebidlist.bidder == user.username %}
+            <li><b>Highest Bidder: </b> {{closebidlist.bidder}} (Owner of the bid) </li>
+            {% else %}
             <li><b>Highest Bidder: </b>{{closebidlist.bidder}}</li>
+            {% endif %}
             <li><b>Final Bid: $</b>{{closebidlist.finalbid}}</li>
         </ul>
     </div>
