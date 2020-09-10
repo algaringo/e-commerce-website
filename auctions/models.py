@@ -3,28 +3,33 @@ from django.db import models
 from django import forms
 from django.utils.timezone import now
 
-CATEGORY = (
-    ('FASHION', 'Fashion'), 
-    ('TOYS', 'Toys'),
-    ('ELECTRONICS', 'Electronics'), 
-    ('HOME', 'Home'), 
-    ('BEAUTY & HEALTH', 'Beauty & Health'), 
-    ('SPORTS', 'Sports'),
-    ('PETS', 'Pets'), 
-    ('BABY', 'Baby'), 
-    ('GROCERY','Grocery'), 
-    ('ENTERTAINMENT','Entertainment'),
-    )
+# CATEGORY = (
+#     ('fashion', 'fashion'), 
+#     ('toys', 'toys'),
+#     ('electronics', 'electronics'), 
+#     ('home', 'home'), 
+#     ('sports', 'sports'),
+#     ('pets', 'pets'), 
+#     ('baby', 'baby'), 
+#     ('grocery','grocery'), 
+#     ('entertainment','entertainment'),
+#     )
 
 class User(AbstractUser):
     pass
+
+class Category(models.Model):
+    name = models.CharField(max_length=20, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
 class Listing(models.Model): 
     productnames = models.CharField(max_length=20)
     descriptions = models.TextField(max_length=500)
     startingbids = models.DecimalField(max_digits=15, decimal_places=2)
     images = models.URLField(blank=True, null=True)
-    category = models.CharField(max_length=50, choices=CATEGORY, blank=True, null=True)
+    category = models.CharField(max_length=50, blank=True, null=True, default="")
     lister = models.CharField(max_length=50, blank=True, null=True)
     created = models.DateTimeField(default=now, editable=False)
 

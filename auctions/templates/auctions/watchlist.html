@@ -30,16 +30,21 @@
       
       <div class="col-xl-3 col-md-6 mb-4">
           <div class="card h-100 border-0 shadow">
+          <!-- IMAGE -->
               {% if object.images %}
-                  <img class="card-img-center" src="{{ object.images }}">
+                  <a href="{% url 'closed' object.listingid %}">
+                      <img style="width: 100%; height: 10.3rem" class="card-img-center" src="{{ object.images }}">
+                  </a>
               {% else %}
-                  <img class="card-img-top" src="https://i.ibb.co/JpH8YSD/no-image-1.png" alt="no-image-1" border="0">
+                  <a href="{% url 'closed' object.listingid %}">
+                      <img class="card-img-top" src="https://i.ibb.co/JpH8YSD/no-image-1.png" alt="">
+                  </a>
               {% endif %}  
-                <div class="card-body text-center">
-                    <a href="{% url 'closed' object.listingid %}">
-                        <h5 class="card-title mb-0"> [CLOSED] {{ object.productnames }} </h5>
-                    </a>
-                </div>
+              <div class="card-body text-center">
+                  <a href="{% url 'closed' object.listingid %}">
+                      <h5 class="card-title mb-0"> [CLOSED] {{ object.productnames }} </h5>
+                  </a>
+              </div>
           </div>
       </div>
 
@@ -77,11 +82,15 @@
       
       <div class="col-xl-3 col-md-6 mb-4" >
         <div class="card h-100 border-0 shadow" >
-            {% if object.images %}
-                <img class="card-img-center" src="{{ object.images }}">
-            {% else %}
-                <img class="card-img-top" src="https://i.ibb.co/JpH8YSD/no-image-1.png" alt="no-image-1" border="0">
-            {% endif %}  
+              {% if object.images %}
+                  <a href="{% url 'listingpage' object.listingid %}">
+                      <img style="width: 100%; height: 10.3rem" class="card-img-center" src="{{ object.images }}">
+                  </a>
+              {% else %}
+                  <a href="{% url 'listingpage' object.listingid %}">
+                      <img class="card-img-top" src="https://i.ibb.co/JpH8YSD/no-image-1.png" alt="">
+                  </a>
+              {% endif %}  
               <div class="card-body text-center">
                 <a href="{% url 'listingpage' object.listingid %}">
                   <h5 class="card-title mb-0"> {{ object.productnames }} </h5>

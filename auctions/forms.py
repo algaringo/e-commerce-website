@@ -1,14 +1,25 @@
 from django import forms
+from .models import Listing, Bidding, Comment, Category
 
-from .models import Listing, Bidding, Comment
+CATEGORY = Category.objects.all().values_list('name', 'name')
+CATEGORY1 = {
+    ('', '')
+}
+
+categories = []
+
+for item in CATEGORY:
+    categories.append(item)
+for item in CATEGORY1:
+    categories.append(item)
 
 class ListingForm(forms.ModelForm):
     class  Meta:
         model = Listing
         labels = {
-            'productnames' : 'Listing Title',
+            'productnames' : 'Productname',
             'descriptions' : 'Description',
-            'startingbids' : 'Starting Bid',
+            'startingbids' : 'Starting Bids',
             'images' : 'Image URL',
             'category' : 'Category'
         }
@@ -19,6 +30,10 @@ class ListingForm(forms.ModelForm):
             'images',
             'category'
         ]
+        widgets = {
+            'category': forms.Select(choices=categories, attrs={'class': 'form-control'})
+        }
+    
 
 class BiddingForm(forms.ModelForm):
     class  Meta:

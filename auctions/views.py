@@ -10,7 +10,7 @@ from datetime import datetime
 from django.utils.timezone import now
 
 
-from .models import User, Listing, Bidding, Watchlist, Closebid, Comment
+from .models import User, Listing, Bidding, Watchlist, Closebid, Comment, Category
 
 from .forms import ListingForm, BiddingForm, CommentForm
 
@@ -46,7 +46,8 @@ def createlisting(request):
     else:
         return render(request, "auctions/create.html", {
             'form': form,
-            'creator': creator
+            'creator': creator,
+            'watchcount': watchcount
         })
 
 def listingpage(request,id):
@@ -265,10 +266,17 @@ def closebid(request, listingid):
 @login_required
 def closed(request, listingid):
     closed = Closebid.objects.get(listingid=listingid)
+    try:
+        watch = Watchlist.objects.filter(watcher=request.user.username)
+        watchcount = len(watch)
+    except:
+        watchcount = None
     return render(request, "auctions/closed.html", {
-        "object": closed
+        "object": closed,
+        "watchcount": watchcount
     })
 
+@login_required
 def comment(request, listingid):
     if request.method == "POST":
         comment = Comment.objects.all()
@@ -285,9 +293,50 @@ def comment(request, listingid):
         return redirect('index') 
 
 def category(request):
-    category = Listing.objects.all()
+    category = Category.objects.all()
+    closedbid = Closebid.objects.all()
+    try:
+        if Watchlist.objects.get(listingid=listingid):
+            closed = True
+        else:
+            closed = False
+    except:
+        closed = False
+    try:
+        watch = Watchlist.objects.filter(watcher=request.user.username)
+        watchcount = len(watch)
+    except:
+        watchcount = None
     return render(request, "auctions/categories.html", {
-        "object": category
+        "object": category,
+        "watchcount": watchcount,
+        "closed": closed,
+        "closedbid": closedbid
+    })
+
+def categorylistings(request, cats):
+    category_posts = Listing.objects.filter(category=cats)
+    try:
+        watch = Watchlist.objects.filter(watcher=request.user.username)
+        watchcount = len(watch)
+    except:
+        watchcount = None
+    return render(request, 'auctions/categorylistings.html', {
+        'cats': cats,
+        'category_posts': category_posts,
+        'watchcount': watchcount
+    })
+
+def allclosed(request):
+    closedlist = Closebid.objects.all()
+    try:
+        watch = Watchlist.objects.filter(watcher=request.user.username)
+        watchcount = len(watch)
+    except:
+        watchcount = None
+    return render(request, 'auctions/allclosed.html', {
+        'closedlist': closedlist,
+        'watchcount': watchcount
     })
 
 def login_view(request):

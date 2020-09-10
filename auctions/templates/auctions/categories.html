@@ -2,34 +2,34 @@
 
 {% block body %}
     <body >
+
     <div class="container">
     <div class="jumbotron" style="margin: 30px auto; background:url(https://i.ibb.co/HnMyp6H/Active-Listings.png) no-repeat; background-size: 100%;"></header>
     <h1> <br/><br/><br/><br/><br/> </h1>
-        </div> <!-- START DIV -->
 
-            <div class="row text-center">
-            {% for object in object %}
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card h-100">
-                        {% if object.images %}
-                                <img class="card-img-center" src="{{ object.images }}">
-                            {% else %}
-                                <img class="card-img-top" src="http://placehold.it/500x325" alt="">
-                            {% endif %}  
-                        <div class="card-body">
-                            <a href="{% url 'listingpage' object.id %}" > <h4 class="card-title"> {{ object.productnames }} </h4> <a>
-                            <p class="card-text">Price: ${{ object.startingbids }}</p> <br/>
-                            {{ object.descriptions }}
-                        </div>
-                        <div class="card-footer">
-                            <a href="{% url 'listingpage' object.id %}" style="background-color: #100e1e; color: white;" class="btn">Bid Now!</a>
-                        </div>
-                    </div>
+
+    <div style="margin: 10% 2% auto auto">
+        <div class="container text-center">
+            <div class="row">
+                <p>   
+                <div class="col-lg-12" style="margin-top: 15px">
+                    <a href="{% url 'allclosed' %}" class="btn btn-lg btn-dark btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">
+                            CLOSED </a>
                 </div>
-            {% endfor %}
+                {% for item in object %}
+                <div class="col-lg-4"  style="margin-top: 15px">
+                <a href="{% url 'categorylistings' item|slugify %}" class="btn btn-lg btn-warning btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">
+                              {{ item }} </a>
+                </div>
+                {% endfor %}
+      
+                </p>
+                
             </div>
+        </div>
+    </div>
 
-        </div> <!-- END DIV -->
+    </div>
+    </div>
     </body>
-
 {% endblock %}

@@ -2,27 +2,38 @@
 
 {% block body %}
 
-    <div class="w-70 p-3" style="margin: 80px auto 15% auto">
+  <main style="margin-bottom: -150px" class="d-flex align-items-center min-vh-100 py-3 py-md-0" >
+    <div class="container">
+      <div class="card login-card">
+        <div class="row no-gutters">
+          <div class="col-md-5">
+            <img src="https://i.ibb.co/GMr4wg6/Au-1.jpg" alt="login" class="login-card-img">
+          </div>
+          <div class="col-md-7">
+            <div class="card-body">
 
-    <h2>Login</h2>
+            <p class="login-card-description">Sign into your account</p>
 
-    {% if message %}
-        <div>{{ message }}</div>
-    {% endif %}
-
-    <form action="{% url 'login' %}" method="post" style="margin: 20px 0 20px"> 
-        {% csrf_token %}
-        <div class="form-group">
-            <input autofocus class="form-control" type="text" name="username" placeholder="Username">
+                {% if message %}
+                    <div>{{ message }}</div>
+                {% endif %}
+                <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                  <div class="form-group">
+                    <input type="text" id="email" class="form-control" name="username" placeholder="Username">
+                  </div>
+                  <div class="form-group mb-4">
+                    <input type="password" name="password" placeholder="Password" id="password" class="form-control">
+                  </div>
+                  <input name="login" id="login" class="btn btn-block login-btn mb-4" type="submit" value="Log In">
+                </form>
+            <p class="login-card-footer-text">Don't have an account? <a class="underlineHover" href="{% url 'register' %}">Register here</a></p>
+     
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password">
+      </div>
         </div>
-        <input class="btn btn-primary" type="submit" value="Login">
-    </form>
-
-    Don't have an account? <a href="{% url 'register' %}">Register here.</a>
-
-    </div>
+  </main>
 
 {% endblock %}

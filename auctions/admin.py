@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Listing, Bidding, Watchlist, Closebid, Comment
+from .models import Listing, Bidding, Watchlist, Closebid, Comment, Category
 
 # Register your models here.
 
@@ -17,9 +17,13 @@ class ClosebidAdmin(admin.ModelAdmin):
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ("__str__", "user")
+    
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ("__str__", "name")
 
 admin.site.register(Listing, ListingAdmin)
 admin.site.register(Bidding, BiddingAdmin)
 admin.site.register(Watchlist, WatchlistAdmin)
 admin.site.register(Closebid, ClosebidAdmin)
 admin.site.register(Comment, CommentAdmin)
+admin.site.register(Category, CategoryAdmin)

@@ -1,0 +1,24 @@
+.btn-squared-default
+{
+    width: 30% !important;
+    height: 30% !important;
+    font-size: 10px;
+}
+
+    .btn-squared-default:hover
+    {
+        border: 3px solid white;
+        font-weight: 800;
+    }
+
+.btn-squared-default-plain
+{
+    width: 30% !important;
+    height: 30% !important;
+    font-size: 10px;
+}
+
+    .btn-squared-default-plain:hover
+    {
+        border: 0px solid white;
+    }

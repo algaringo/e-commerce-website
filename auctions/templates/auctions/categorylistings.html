@@ -1,0 +1,57 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <body >
+<header class="bg-secondary text-center py-5 mb-4">
+  <div class="container">
+    <h1 class="font-weight-light text-white"> {{ cats }} </h1>
+  </div>
+</header>
+
+    <div style="margin-bottom: 500px"> <!-- START DIV -->
+
+<!-- LOOP TO OUTPUT ACTIVE LISTINGS -->
+    {% if category_posts  %}
+
+    <div class="row text-left" style="margin: 2% auto">
+    {% for object in category_posts %}
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card h-100">
+                    {% if object.images %}
+                        <a  href="{% url 'listingpage' object.id %}">
+                            <img style="width: 100%; height: 10.3rem" style="width: 100%;"  class="card-img-center" src="{{ object.images }}">
+                        </a>
+                    {% else %}
+                        <a href="{% url 'listingpage' object.id %}">
+                            <img class="card-img-top" src="https://i.ibb.co/T8nxLQT/No-Image-Available.png" alt="">
+                        </a>
+                    {% endif %}  
+                    <div class="card-body">
+                    <center>    <h5 class="card-title"> {{ object.productnames }} </h5>  </center>
+                        <p class="card-text">Current Bid: <span style="color: green; font-weight: bold" > ${{ object.startingbids }}  </span> 
+                        <br/> <span style="font-size: small; display: block; text-overflow: ellipsis; word-wrap: break-word; overflow: hidden; max-height: 7.2em; line-height: 1.8em;"> 
+                                {{ object.descriptions }} </span> </p>
+                    </div>
+                    <div class="card-footer " style="background: white;">
+                        <a href="{% url 'listingpage' object.id %}" class="btn btn-lg btn-warning btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold; ;transition: all 0.2s;" 
+                        class="btn">Check Item</a>
+                    </div>
+                </div>
+            </div>
+    {% endfor %}
+    </div>
+
+    {% else %}
+
+    <center>
+    <img style="width: 30%; margin-top: 5px " src="https://i.ibb.co/6vbhKgQ/Pngtree-it-s-in-the-3845898.png" alt="Pngtree-it-s-in-the-3845898" border="0">
+    <h5> This category is empty. <a href="{% url 'category' %}"> Checkout other categories! </a> </h5>
+    </center>
+
+    {% endif %}
+
+    </div>
+    </div> <!-- END DIV -->
+    </body>
+
+{% endblock %}

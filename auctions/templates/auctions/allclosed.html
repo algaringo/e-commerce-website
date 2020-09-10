@@ -1,0 +1,53 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<!-- HEADER -->
+<header class="bg-secondary text-center py-5 mb-4">
+  <div class="container">
+    <h1 class="font-weight-light text-white">CLOSED LISTINGS </h1>
+  </div>
+</header>
+
+  <!-- - - - - - - -  - - - - - CLOSED BID - - - - - - - - - - - - - - -->
+
+  <!-- CONATINER FOR CLOSED ITEMS -->
+  <div class="container" style="margin: 5% auto 15%" >
+      <div class="row">
+
+      <!-- LOOP TO SHOW ALL CLOSED ITEMS WON -->
+      {% for object in closedlist %}
+      
+      <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card h-100 border-0 shadow">
+          <!-- IMAGE -->
+              {% if object.images %}
+                  <a href="{% url 'closed' object.listingid %}">
+                      <img style="width: 100%; height: 10.3rem" class="card-img-center" src="{{ object.images }}">
+                  </a>
+              {% else %}
+                  <a href="{% url 'closed' object.listingid %}">
+                      <img class="card-img-top" src="https://i.ibb.co/JpH8YSD/no-image-1.png" alt="">
+                  </a>
+              {% endif %}  
+              <div class="card-body text-center">
+                  <a href="{% url 'closed' object.listingid %}">
+                      <h5 class="card-title mb-0"> [CLOSED] {{ object.productnames }} </h5>
+                  </a>
+              </div>
+          </div>
+      </div>
+
+      {% empty %}
+          <h7 >  No closed listings yet. <a href="{% url 'index' %}"> View Active Listings. </a>  </h7>
+      {% endfor %}
+      <!-- LOOP TO SHOW ALL CLOSED ITEMS WON -->
+ 
+    </div>
+  </div>
+        <hr style="margin: 5% auto 10% auto">
+  </div>
+  <!-- END OF CONATINER FOR CLOSED ITEMS WON -->
+
+
+{% endblock %}

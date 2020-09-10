@@ -3,19 +3,30 @@
 
 {% block body %}
     <body style="margin-top: 100px">
-        <h5 class="w-80 p-4" >Create Listings</h5>
-
-        <form class="w-80 p-3" method="post">
-            {% csrf_token %}
-                <div class="col-12 autofocus">
-                    {{ form.productnames|as_crispy_field }}
-                    {{ form.startingbids|as_crispy_field }}
-                    {{ form.descriptions|as_crispy_field }}
-                    {{ form.images|as_crispy_field }}
-                    {{ form.category|as_crispy_field }}
-                    <button type="submit" class="btn btn-success" style="margin-top: 5%">Submit</button>
-                </div>
-        </form> 
+        <section class="get-in-touch">
+        <h1 class="title">Create Listings</h1>
+        <form class="row" method="post">
+        {% csrf_token %}
+            <div class="form-field col-lg-12">           
+                 {{ form.productnames|as_crispy_field }}
+            </div>
+            <div class="form-field col-lg-6 ">
+                {{ form.startingbids|as_crispy_field }}
+            </div>
+            <div class="form col-lg-6 ">
+                {{ form.category|as_crispy_field }}
+            </div>
+            <div class="form col-lg-12 ">
+                {{ form.images|as_crispy_field }}
+            </div>
+            <div class="form-field col-lg-12" style="hidden">
+                {{ form.descriptions|as_crispy_field }}
+            </div>
+            <div class="contact-form form-field col-lg-12">
+                <input class="submit-btn" type="submit" value="Submit">
+            </div>
+        </form>
+        </section>
     </body>
 
 {% endblock %}
