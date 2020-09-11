@@ -1,1 +1,1 @@
-web: gunicorn Project2.wsgi
+web: gunicorn auctionsbyalg.wsgi
